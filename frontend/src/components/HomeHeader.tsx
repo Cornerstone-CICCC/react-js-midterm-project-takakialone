@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import useAuth from "../features/auth/useAuth";
 
 function HomeHeader() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
   return (
     <header className="flex justify-between items-center w-full px-margin py-xs sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-secondary-container/30 shadow-[0_4_20px_rgba(208,91,255,0.15)]">
       <div className="flex items-center gap-md">
@@ -48,11 +48,17 @@ function HomeHeader() {
       </div>
       <div className="flex items-center gap-sm">
         <div className="flex items-center gap-xs">
-          <button className="p-xs text-on-surface-variant hover:text-primary-fixed-dim hover:drop-shadow-[0_0_5px_rgba(42,229,0,0.5)] transition-all active:scale-95">
+          <Link
+            to="/cart"
+            className="p-xs text-on-surface-variant hover:text-primary-fixed-dim hover:drop-shadow-[0_0_5px_rgba(42,229,0,0.5)] transition-all active:scale-95"
+          >
             <ShoppingCart className="material-symbols-outlined" />
-          </button>
+          </Link>
           {isAuthenticated && (
-            <button className="p-xs text-on-surface-variant hover:text-primary-fixed-dim hover:drop-shadow-[0_0_5px_rgba(42,229,0,0.5)] transition-all active:scale-95">
+            <button
+              className="p-xs text-on-surface-variant hover:text-primary-fixed-dim hover:drop-shadow-[0_0_5px_rgba(42,229,0,0.5)] transition-all active:scale-95"
+              onClick={() => logout()}
+            >
               <span className="material-symbols-outlined">Logout</span>
             </button>
           )}

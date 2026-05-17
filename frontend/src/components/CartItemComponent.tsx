@@ -1,13 +1,74 @@
 import { Trash2 } from "lucide-react";
 import useCart from "../contexts/cart/useCart";
 import type { CartType } from "../types/cart.type";
+import { useEffect, useState } from "react";
+import { getProductById } from "../features/products/productsApi";
+import type { Product } from "../types/products.type";
+import Loading from "./Loading";
 
-type Props = { product: CartType };
+type Props = { item: CartType };
 
-function CartItemComponent({ product }: { product: Props }) {
-  const { incrementQuantity, decrementQuantity, removeItemFromCart } =
+function CartItemComponent({ item }: { item: Props }) {
+  const { cart, incrementQuantity, decrementQuantity, removeItemFromCart } =
     useCart();
-  const { productId, name, imageUrl, price, quantity } = product.product;
+
+  const [product, setProduct] = useState<Product | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const { productId, name, imageUrl, price, quantity } = item.item;
+
+  const selectedItem = cart.find((item) => item.productId === product?.id);
+  const subtotal = selectedItem?.price! * selectedItem?.quantity!;
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function fetchProduct() {
+      if (!productId) {
+        setError("Product not found");
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const product = await getProductById(productId);
+
+        if (isMounted) {
+          setProduct(product);
+        }
+      } catch (e) {
+        if (isMounted) {
+          setError(e instanceof Error ? e.message : "Failed to fetch product");
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    fetchProduct();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [productId]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (error || !product) {
+    return (
+      <main className="lg:ml-64 px-margin py-xl max-w-container-max mx-auto">
+        <p className="rounded-lg border border-error/30 bg-error-container/30 px-md py-sm font-code-sm text-error">
+          {error || "Product not found"}
+        </p>
+      </main>
+    );
+  }
+
   return (
     <div className="glass-card flex gap-md p-md group">
       <div className="w-32 h-32 shrink-0 bg-surface-container overflow-hidden rounded-sm border border-outline-variant/30">
@@ -55,12 +116,15 @@ function CartItemComponent({ product }: { product: Props }) {
               className="w-8 h-8 flex items-center justify-center border border-outline-variant text-on-surface hover:bg-surface-variant"
               type="button"
               onClick={() => incrementQuantity(productId)}
+              disabled={product?.stock! <= selectedItem?.quantity!}
             >
               +
             </button>
           </div>
           <div className="text-right">
-            <p className="text-on-surface-variant text-xs">${price} CAD</p>
+            <p className="text-on-surface-variant text-xs">
+              ${subtotal.toFixed(2)} CAD
+            </p>
           </div>
         </div>
       </div>
