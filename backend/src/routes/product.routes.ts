@@ -1,5 +1,7 @@
 import express from 'express';
 import Product from '../models/Product';
+import authMiddleware from '../middleware/auth.middleware';
+import adminMiddleware from '../middleware/admin.middleware';
 
 const router = express.Router();
 
@@ -32,7 +34,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // CREATE product
-router.post('/', async (req, res) => {
+router.post('/', authMiddleware, adminMiddleware, async (req, res) => {
   try {
     const product = await Product.create(req.body);
 
@@ -43,7 +45,7 @@ router.post('/', async (req, res) => {
 });
 
 // UPDATE product
-router.put('/:id', async (req, res) => {
+router.put('/:id', authMiddleware, adminMiddleware, async (req, res) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
@@ -64,7 +66,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE product
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authMiddleware, adminMiddleware, async (req, res) => {
   try {
     const deletedProduct = await Product.findByIdAndDelete(
       req.params.id
