@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { type Product } from "../types/products.type";
 import { getProductById } from "../features/products/productsApi";
 import { ShoppingCart } from "lucide-react";
@@ -168,10 +168,12 @@ function ProductDetailPage() {
             </div>
           </div>
           <div className="flex flex-col gap-sm">
-            <button className="w-full py-md bg-primary-container text-on-primary font-headline-md text-headline-md rounded-lg flex items-center justify-center gap-sm hover:glow-primary active:scale-[0.98] transition-all">
-              <span className="material-symbols-outlined">encrypted</span>
-              ENCRYPTED_PURCHASE
-            </button>
+            <Link
+              to="/checkout"
+              className="w-full py-md bg-primary-container text-on-primary font-headline-md text-headline-md rounded-lg flex items-center justify-center gap-sm hover:glow-primary active:scale-[0.98] transition-all"
+            >
+              PROCEED TO CHECKOUT
+            </Link>
             <button
               className="w-full py-md border border-secondary text-secondary font-headline-md text-headline-md rounded-lg flex items-center justify-center gap-sm hover:glow-secondary active:scale-[0.98] transition-all bg-secondary/5 disabled:cursor-not-allowed disabled:opacity-50"
               onClick={handleAddToCart}

@@ -16,11 +16,13 @@ function AuthContextProvider({ children }: { children: React.ReactNode }) {
   async function login(input: LoginType) {
     const user = await loginApi(input);
     setUser(user);
+    return user;
   }
 
   async function register(input: SignupType) {
     const user = await signupApi(input);
     setUser(user);
+    return user;
   }
 
   async function logout() {

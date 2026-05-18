@@ -1,4 +1,14 @@
+import CheckoutItem from "../components/CheckoutItem";
+import useCart from "../contexts/cart/useCart";
+
 function Checkout() {
+  const { cart } = useCart();
+  const subtotal = cart
+    .reduce((sum, cur) => sum + cur.price * cur.quantity, 0)
+    .toFixed(2);
+  const fee = 15;
+  const total = subtotal + fee;
+
   return (
     <main className="pt-32 pb-20 px-margin-desktop min-h-screen">
       <div className="max-w-350 mx-auto grid grid-cols-12 gap-gutter items-start">
@@ -24,102 +34,13 @@ function Checkout() {
                 </h3>
               </div>
               <span className="font-terminal-sm text-on-surface-variant">
-                2 ITEMS ENCRYPTED
+                {cart.length} ITEMS ENCRYPTED
               </span>
             </div>
             <div className="flex flex-col gap-base">
-              <div className="flex gap-md p-md bg-white/5 rounded hover:bg-white/10 transition-colors border-l-2 border-transparent hover:border-primary-container">
-                <div className="w-24 h-24 bg-surface-container rounded overflow-hidden shrink-0">
-                  <img
-                    alt="Night Capsule"
-                    className="w-full h-full object-cover"
-                    data-alt="A futuristic, sleek matte black liquid container with glowing emerald green structural lines and digital readouts on its surface. The object is set against a dark, foggy warehouse environment with purple atmospheric lighting and cinematic depth of field."
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnONEPgm129nKuM3RojQmkrkJUp3b-pk8-NPOf9-vr0bIGJ-Lu98TUnBc2FuC4X9OVPN86E2dKpWwaNNPvgGmnMYNVx7hmaz2R5a5yyfmMhzB8zJ7tEH2mPgSskNQVX_ZI4JgzpzwUy1yjD33-CRy6D3Ad12KnkknFdOMysHFRc22HS2252ca9TNv_ZKgi-Np-wLxti-qA99l24iWrd-VCGdwmOAtqPg4LDjIkFtMGh_wDMQJpcHjcy8HuxcPITAjYLDH6Cb4xLOw"
-                  />
-                </div>
-                <div className="grow flex flex-col justify-between">
-                  <div>
-                    <div className="flex justify-between items-start">
-                      <h4 className="font-headline-md text-body-md font-bold uppercase">
-                        Night Capsule
-                      </h4>
-                      <span className="font-price-tag text-secondary">
-                        0.45 ETH
-                      </span>
-                    </div>
-                    <p className="font-terminal-sm text-label-caps text-on-surface-variant">
-                      SKU: NC-099-VOID
-                    </p>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-4 text-on-surface-variant">
-                      <button className="hover:text-primary transition-colors">
-                        <span className="material-symbols-outlined text-sm">
-                          remove
-                        </span>
-                      </button>
-                      <span className="font-terminal-sm text-primary">01</span>
-                      <button className="hover:text-primary transition-colors">
-                        <span className="material-symbols-outlined text-sm">
-                          add
-                        </span>
-                      </button>
-                    </div>
-                    <button className="font-terminal-sm text-error/60 hover:text-error transition-colors flex items-center gap-1">
-                      <span className="material-symbols-outlined text-sm">
-                        delete
-                      </span>
-                      PURGE
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div className="flex gap-md p-md bg-white/5 rounded hover:bg-white/10 transition-colors border-l-2 border-transparent hover:border-primary-container">
-                <div className="w-24 h-24 bg-surface-container rounded overflow-hidden shrink-0">
-                  <img
-                    alt="Shadow Bottle"
-                    className="w-full h-full object-cover"
-                    data-alt="A minimalist high-tech glass bottle with a dark iridescent finish, reflecting neon violet and toxic green lights. The bottle features an integrated digital status screen displaying cryptic code. It is positioned on a reflective metallic surface in a dark cyberpunk setting."
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDh69hjikOGGOfP9MaAP7XQuybJgB3IZ-A4yes1sen35pUgRxrGrCiWyLT_Ll0mdwPwUwnHLckb7FHgRMqzOU0kI94Mf0kh5nq-NNhQroD7qHJsAX6dfpnCwPuizLipJkDgezYZc7spQKzhNX865QSeAjOCq4b3CvZRE2MBomxPK0ewFh2P3py-mD6iXUAZhpREJ00AaC-YDgqSy5ls5e4wGArIigLva22pdGyaTrTDxP79pFHM8DSadlEGxNjJvwN0mneQC5loqF0"
-                  />
-                </div>
-                <div className="grow flex flex-col justify-between">
-                  <div>
-                    <div className="flex justify-between items-start">
-                      <h4 className="font-headline-md text-body-md font-bold uppercase">
-                        Shadow Bottle
-                      </h4>
-                      <span className="font-price-tag text-secondary">
-                        1,200 CR
-                      </span>
-                    </div>
-                    <p className="font-terminal-sm text-label-caps text-on-surface-variant">
-                      SKU: SB-881-GHOST
-                    </p>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-4 text-on-surface-variant">
-                      <button className="hover:text-primary transition-colors">
-                        <span className="material-symbols-outlined text-sm">
-                          remove
-                        </span>
-                      </button>
-                      <span className="font-terminal-sm text-primary">01</span>
-                      <button className="hover:text-primary transition-colors">
-                        <span className="material-symbols-outlined text-sm">
-                          add
-                        </span>
-                      </button>
-                    </div>
-                    <button className="font-terminal-sm text-error/60 hover:text-error transition-colors flex items-center gap-1">
-                      <span className="material-symbols-outlined text-sm">
-                        delete
-                      </span>
-                      PURGE
-                    </button>
-                  </div>
-                </div>
-              </div>
+              {cart.map((item) => (
+                <CheckoutItem key={item.productId} item={item} />
+              ))}
             </div>
           </section>
           <section className="glass-panel p-lg rounded-lg border-l-4 border-l-tertiary-container/50">
@@ -249,7 +170,7 @@ function Checkout() {
             <div className="space-y-4 font-terminal-sm text-on-surface-variant border-b border-white/10 pb-6">
               <div className="flex justify-between">
                 <span>SUBTOTAL_VAL</span>
-                <span className="text-on-surface">0.45 ETH + 1,200 CR</span>
+                <span className="text-on-surface">${subtotal}CAD</span>
               </div>
               <div className="flex justify-between">
                 <span>GAS_FEE_EST</span>
@@ -257,7 +178,7 @@ function Checkout() {
               </div>
               <div className="flex justify-between">
                 <span>SECURE_TUNNEL_FEE</span>
-                <span className="text-on-surface">15.00 CR</span>
+                <span className="text-on-surface">${fee.toFixed(2)}CAD</span>
               </div>
             </div>
             <div className="pt-6 pb-8">
@@ -267,11 +188,8 @@ function Checkout() {
                 </span>
               </div>
               <div className="mt-2 text-right">
-                <p className="font-price-tag text-3xl text-primary neon-glow-text">
-                  0.454 ETH
-                </p>
                 <p className="font-price-tag text-lg text-secondary">
-                  +1,215 CR
+                  ${total}CAD
                 </p>
               </div>
             </div>

@@ -6,7 +6,7 @@ import { FingerprintPattern, KeyRound, Mail, UserRoundPen } from "lucide-react";
 type RoleType = "customer" | "seller";
 
 function SignupPage() {
-  const { register } = useAuth();
+  const { register, user } = useAuth();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [role, setRole] = useState<RoleType>("customer");
@@ -21,8 +21,17 @@ function SignupPage() {
     setError("");
     try {
       setIsSubmitting(true);
-      await register({ role, email, password, username });
-      navigate("/");
+      const registeredUser = await register({
+        role,
+        email,
+        password,
+        username,
+      });
+      if (registeredUser.role === "seller") {
+        navigate("/seller/dashboard");
+      } else {
+        navigate("/products");
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : "Failed to sign you up");
     } finally {

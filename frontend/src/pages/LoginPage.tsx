@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { KeyRound, Mail } from "lucide-react";
 
 function LoginPage() {
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -18,8 +18,12 @@ function LoginPage() {
     setIsSubmitting(true);
 
     try {
-      await login({ email, password });
-      navigate("/");
+      const loggedInUser = await login({ email, password });
+      if (loggedInUser.role === "seller") {
+        navigate("/seller/dashboard");
+      } else {
+        navigate("/products");
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to log you in");
     } finally {

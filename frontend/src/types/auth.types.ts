@@ -11,8 +11,8 @@ export type AuthContextType = {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (input: LoginType) => Promise<void>;
-  register: (input: SignupType) => Promise<void>;
+  login: (input: LoginType) => Promise<User>;
+  register: (input: SignupType) => Promise<User>;
   logout: () => Promise<void>;
   restoreAuth: () => Promise<void>;
 };
